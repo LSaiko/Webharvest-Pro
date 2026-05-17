@@ -6,6 +6,7 @@ Creates richly formatted Excel files with PowerBI/PivotTable analytics templates
 import re
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import urlparse
 
 import openpyxl
 from openpyxl.styles import (

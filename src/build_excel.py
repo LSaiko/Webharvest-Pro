@@ -9,6 +9,7 @@ or can be run standalone with the scraper engine directly.
 
 import sys
 import json
+import time
 import argparse
 from pathlib import Path
 from datetime import datetime
@@ -21,8 +22,12 @@ from csv_exporter import export_to_csv
 
 def build_from_json(json_path: str, output_path: str = None) -> str:
     """Build Excel from previously scraped JSON data"""
-    with open(json_path, 'r', encoding='utf-8') as f:
-        results = json.load(f)
+    try:
+        with open(json_path, 'r', encoding='utf-8') as f:
+            results = json.load(f)
+    except json.JSONDecodeError as e:
+        print(f"❌ Invalid JSON file: {e}")
+        sys.exit(1)
 
     if not output_path:
         ts = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -59,7 +64,6 @@ def scrape_and_export(urls: list[str], output_dir: str = '.',
 
         # Respect crawl delay
         if i < len(urls):
-            import time
             delay = result.get('crawl_delay', 2)
             print(f"  ⏱ Rate limiting: {delay}s delay...")
             time.sleep(delay)
@@ -127,8 +131,9 @@ Examples:
         build_from_json(json_file, 
                        str(Path(args.output) / 'webscraper_from_json.xlsx') if args.output != '.' else None)
     elif args.urls:
-        Path(args.output).mkdir(parents=True, exist_ok=True)
-        scrape_and_export(args.urls, args.output, args.format)
+        output_dir = Path(args.output).resolve()
+        output_dir.mkdir(parents=True, exist_ok=True)
+        scrape_and_export(args.urls, str(output_dir), args.format)
     else:
         # Interactive mode
         print("WebHarvest Pro — Interactive Mode")

@@ -105,7 +105,7 @@ def fetch_page(url: str, timeout: int = 15) -> tuple[BeautifulSoup | None, str, 
             return None, meta['error'], meta
 
         content = resp.text
-        meta['content_hash'] = hashlib.md5(content.encode()).hexdigest()
+        meta['content_hash'] = hashlib.sha256(content.encode()).hexdigest()
 
         # Check for paywall indicators
         content_lower = content.lower()

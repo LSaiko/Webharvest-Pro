@@ -1,11 +1,13 @@
 """CSV Export - clean, analysis-ready CSV files"""
 import csv
 import os
+from pathlib import Path
 from datetime import datetime
 
 
 def export_to_csv(all_results: list, output_dir: str) -> list[str]:
     """Export scrape results to multiple analysis-ready CSV files"""
+    output_dir = str(Path(output_dir).resolve())
     os.makedirs(output_dir, exist_ok=True)
     ts = datetime.now().strftime('%Y%m%d_%H%M%S')
     files = []

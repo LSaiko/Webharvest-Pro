@@ -15,7 +15,7 @@ WebHarvest Pro is a **full-stack data collection pipeline** that:
 
 1. **Validates** every URL against an ethics engine (robots.txt, paywall detection, auth-wall detection)
 2. **Scrapes** structured public data — headings, paragraphs, tables, links, metadata
-3. **Monitors** sites on a schedule (1/4/12/24 hr intervals) with content-hash change detection
+3. **Tracks** content via SHA-256 hashes stored in every export for change auditing (browser UI adds scheduling on top)
 4. **Exports** to richly formatted Excel workbooks with pre-built PowerBI/PivotTable analytics templates, or clean analysis-ready CSV files
 
 ---
@@ -126,7 +126,7 @@ This tool is built around **four layers of protection** against unethical scrapi
 | HTML parsing | `BeautifulSoup4` + `lxml` | Fast, fault-tolerant DOM traversal |
 | robots.txt | `urllib.robotparser` (stdlib) | Zero extra dependency, RFC-compliant |
 | Excel generation | `openpyxl` | Full formatting API — colors, borders, tables, charts |
-| Data manipulation | `pandas` | CSV export and data shaping |
+| CSV export | `csv` (stdlib) | Zero-dependency CSV writing with clean column schema |
 | UI | Vanilla JS + HTML/CSS | Zero-dependency browser app, no build step |
 | CLI | `argparse` (stdlib) | Self-documenting command interface |
 
@@ -155,19 +155,18 @@ See [`docs/SKILLS_SHOWCASE.md`](docs/SKILLS_SHOWCASE.md) for annotated code walk
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/webharvest-pro.git
-cd webharvest-pro
+git clone https://github.com/LSaiko/Webharvest-Pro.git
+cd Webharvest-Pro
 pip install -r requirements.txt
 python src/build_excel.py --urls https://quotes.toscrape.com
 ```
 
 **Requirements:**
 ```
-requests>=2.28.0
-beautifulsoup4>=4.11.0
-lxml>=4.9.0
-openpyxl>=3.1.0
-pandas>=1.5.0
+requests>=2.28.0,<3.0.0
+beautifulsoup4>=4.11.0,<5.0.0
+lxml>=4.9.0,<6.0.0
+openpyxl>=3.1.0,<4.0.0
 ```
 
 ---
